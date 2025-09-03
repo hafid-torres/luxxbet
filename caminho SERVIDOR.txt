@@ -1,0 +1,10 @@
+cd C:\Users\ragna\Documents\luxxybet\backend
+node index.js
+
+
+
+cd C:\Users\ragna\Documents\luxxybet\frontend
+npm start
+
+
+

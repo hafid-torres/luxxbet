@@ -1,0 +1,22 @@
+.profile-dropdown { position: relative; }
+.dropdown-menu {
+  position: absolute;
+  top: 100%; right: 0;
+  background: #141518;
+  border-radius: 8px;
+  margin-top: 4px;
+  padding: 4px 0;
+  min-width: 180px;
+  box-shadow: 0 4px 14px rgba(0,0,0,.5);
+}
+.dropdown-item {
+  width: 100%;
+  padding: 8px 12px;
+  background: none;
+  border: none;
+  text-align: left;
+  color: #fff;
+  cursor: pointer;
+}
+.dropdown-item:hover { background: #22242b; }
+.dropdown-item.disabled { color: #555; cursor: not-allowed; }
