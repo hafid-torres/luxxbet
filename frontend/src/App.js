@@ -33,7 +33,6 @@ function App() {
   const [showAgeModal, setShowAgeModal] = useState(true);
 
   const [saques, setSaques] = useState([]);
-  const [deposits, setDeposits] = useState([]);
 
   const openSuccessModal = (message) => {
     setSuccessMessage(message);
@@ -134,7 +133,6 @@ function App() {
         loading={loading}
         setLoading={setLoading}
         onProfileClick={handleProfileClick}
-        deposits={deposits}
         saques={saques}
       />
 
@@ -190,7 +188,6 @@ function App() {
         isOpen={showProfileModal}
         onClose={() => setShowProfileModal(false)}
         saques={saques}
-        deposits={deposits}
       />
 
       <DepositHistoryModal
