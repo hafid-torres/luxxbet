@@ -31,7 +31,8 @@ function LoginModal({ isOpen, onClose, onLogin, openRegister }) {
         alert("Não foi possível capturar o token JWT");
         return;
       }
-      onLogin({ ...data.user, jwt });
+      // envia id real do usuário junto com jwt
+      onLogin({ id: data.user.id, jwt, email: data.user.email });
       onClose();
     } catch (err) {
       console.error(err);

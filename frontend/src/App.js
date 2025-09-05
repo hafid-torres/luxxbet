@@ -33,6 +33,7 @@ function App() {
   const [showAgeModal, setShowAgeModal] = useState(true);
 
   const [saques, setSaques] = useState([]);
+  const [deposits, setDeposits] = useState([]);
 
   const openSuccessModal = (message) => {
     setSuccessMessage(message);
@@ -54,10 +55,12 @@ function App() {
     setShowDepositModal(true);
   };
 
-  // ===== Alteração Stripe Backend =====
+  // ===== Alteração Stripe Backend com logs =====
   const handleDeposit = async (amount) => {
     try {
-      const user_id = jwt; // ajuste conforme seu backend/Supabase
+      const user_id = jwt; 
+      console.log("🔹 handleDeposit chamado com valor:", amount, "user_id:", user_id);
+
       if (!user_id) {
         openSuccessModal("Erro: usuário não identificado. Faça login novamente.");
         return;
@@ -71,16 +74,19 @@ function App() {
         body: JSON.stringify({ user_id, amount }),
       });
 
+      console.log("🔹 Resposta do fetch raw:", response);
+
       const data = await response.json();
+      console.log("🔹 Resposta do fetch JSON:", data);
 
       if (data.url) {
-        // Redireciona o usuário para a página de checkout da Stripe
+        console.log("🔹 Redirecionando para Stripe:", data.url);
         window.location.href = data.url;
       } else {
         openSuccessModal("Erro ao criar sessão de pagamento.");
       }
     } catch (err) {
-      console.error("Erro ao criar sessão de checkout:", err);
+      console.error("❌ Erro ao criar sessão de checkout:", err);
       openSuccessModal("Erro ao criar sessão de pagamento.");
     }
   };
@@ -133,6 +139,7 @@ function App() {
         loading={loading}
         setLoading={setLoading}
         onProfileClick={handleProfileClick}
+        deposits={deposits}
         saques={saques}
       />
 
@@ -188,6 +195,7 @@ function App() {
         isOpen={showProfileModal}
         onClose={() => setShowProfileModal(false)}
         saques={saques}
+        deposits={deposits}
       />
 
       <DepositHistoryModal
