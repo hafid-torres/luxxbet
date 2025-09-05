@@ -33,14 +33,14 @@ function App() {
   const [showAgeModal, setShowAgeModal] = useState(true);
 
   const [saques, setSaques] = useState([]);
-  const [deposits, setDeposits] = useState([]);
+  const [deposits] = useState([]); // removi setDeposits porque não está em uso
 
   const openSuccessModal = (message) => {
     setSuccessMessage(message);
     setShowSuccessModal(true);
   };
 
-  const refreshBalance = () => setBalance(prev => prev);
+  const refreshBalance = () => setBalance((prev) => prev);
 
   const handleRegister = (data) => {
     setIsLoggedIn(true);
@@ -58,7 +58,7 @@ function App() {
   // ===== Alteração Stripe Backend com logs =====
   const handleDeposit = async (amount) => {
     try {
-      const user_id = jwt; 
+      const user_id = jwt;
       console.log("🔹 handleDeposit chamado com valor:", amount, "user_id:", user_id);
 
       if (!user_id) {
@@ -100,8 +100,8 @@ function App() {
       openSuccessModal("Saldo insuficiente para saque");
       return;
     }
-    setBalance(prev => prev - amount);
-    setSaques(prev => [...prev, { amount, date: new Date(), status: "Pendente" }]);
+    setBalance((prev) => prev - amount);
+    setSaques((prev) => [...prev, { amount, date: new Date(), status: "Pendente" }]);
     setShowWithdrawModal(false);
     openSuccessModal(`Saque de R$${amount.toLocaleString("pt-BR")} solicitado com sucesso!`);
   };
