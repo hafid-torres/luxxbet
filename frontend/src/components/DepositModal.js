@@ -20,7 +20,7 @@ function DepositModal({ isOpen, onClose, onDeposit, openSuccessModal }) {
 
   if (!isOpen) return null;
 
-  const handleDeposit = () => {
+  const handleDepositClick = async () => {
     const num = parseFloat(amount.replace(",", "."));
     if (isNaN(num) || num < 20) {
       setError("O valor mínimo para depósito é R$20,00");
@@ -31,8 +31,14 @@ function DepositModal({ isOpen, onClose, onDeposit, openSuccessModal }) {
       return;
     }
     setError("");
-    onDeposit(num);
-    setAmount("");
+
+    try {
+      await onDeposit(num);
+      setAmount("");
+    } catch (err) {
+      console.error("Erro ao processar depósito:", err);
+      openSuccessModal("Erro ao processar depósito. Tente novamente.");
+    }
   };
 
   return (
@@ -65,7 +71,7 @@ function DepositModal({ isOpen, onClose, onDeposit, openSuccessModal }) {
           ))}
         </div>
 
-        <button className="btn btn-primary deposit-btn" onClick={handleDeposit}>
+        <button className="btn btn-primary deposit-btn" onClick={handleDepositClick}>
           Depositar via PIX!
         </button>
       </div>

@@ -55,11 +55,35 @@ function App() {
     setShowDepositModal(true);
   };
 
-  const handleDeposit = (amount) => {
-    setBalance(prev => prev + amount);
-    setDeposits(prev => [...prev, { amount, date: new Date(), status: "Concluído" }]);
-    setShowDepositModal(false);
-    openSuccessModal(`Depósito de R$${amount.toLocaleString("pt-BR")} realizado com sucesso!`);
+  // ===== Alteração Stripe Backend =====
+  const handleDeposit = async (amount) => {
+    try {
+      const user_id = jwt; // ajuste conforme seu backend/Supabase
+      if (!user_id) {
+        openSuccessModal("Erro: usuário não identificado. Faça login novamente.");
+        return;
+      }
+
+      const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/create-checkout-session`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ user_id, amount }),
+      });
+
+      const data = await response.json();
+
+      if (data.url) {
+        // Redireciona o usuário para a página de checkout da Stripe
+        window.location.href = data.url;
+      } else {
+        openSuccessModal("Erro ao criar sessão de pagamento.");
+      }
+    } catch (err) {
+      console.error("Erro ao criar sessão de checkout:", err);
+      openSuccessModal("Erro ao criar sessão de pagamento.");
+    }
   };
 
   const handleWithdraw = (amount) => {
